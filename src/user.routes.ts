@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import { Role } from "./_helpers/role";
 
 import express, { Request, Response } from "express";
+import { Student } from "./entity/Student";
 const userRouter = express.Router();
 
 userRouter.get("/users", async (req: Request, res: Response) => {
@@ -45,7 +46,10 @@ userRouter.get("/users/:id", async (req: Request, res: Response) => {
   }
 });
 
-userRouter.post("/users", async (req: Request, res: Response) => {
+
+
+//trangia
+userRouter.post("/students", async (req: Request, res: Response) => {
   try {
     const { error, value } = createSchema.validate(req.body, {
       abortEarly: false,
@@ -57,30 +61,32 @@ userRouter.post("/users", async (req: Request, res: Response) => {
         .json({ error: error.details.map((x) => x.message) });
     }
 
-    const { firstName, lastName, title, email, role, password } = value;
+    const { firstName, lastName, sex, grade, course, password } = value;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const userRepository = AppDataSource.getRepository(User);
+    const userRepository = AppDataSource.getRepository(Student);
     const newUser = userRepository.create({
       firstName,
       lastName,
-      title,
-      email,
-      role,
+      sex,
+      grade,
+      course,
       hashedPassword,
     });
     await userRepository.save(newUser);
 
     res
       .status(201)
-      .json({ message: "User created successfully", userId: newUser.id });
+      .json({ message: "Student added sucessfully", student: newUser });
   } catch (error) {
-    console.error("Error creating user:", error);
+    console.error("Error adding student:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
+
+//boss carl
 userRouter.put("/user/:id", async (req: Request, res: Response) => {
   try {
     const userRepository = AppDataSource.getRepository(User);
