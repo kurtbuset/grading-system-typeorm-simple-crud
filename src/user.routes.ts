@@ -1,5 +1,5 @@
 import { AppDataSource } from "./_helpers/data-source";
-import { User } from "./entity/User";
+import { Student } from "./entity/Student";
 import Joi from "joi";
 import bcrypt from "bcrypt";
 import { Role } from "./_helpers/role";
@@ -9,15 +9,15 @@ const userRouter = express.Router();
 
 userRouter.get("/users", async (req: Request, res: Response) => {
   try {
-    const users = await AppDataSource.manager.find(User);
+    const students = await AppDataSource.manager.find(Student);
 
-    if (users.length === 0) {
-      return res.status(404).json({ message: "No users found" });
+    if (students.length === 0) {
+      return res.status(404).json({ message: "No students found" });
     }
 
-    return res.status(200).json({ message: "List of users", users });
+    return res.status(200).json({ message: "List of students", students });
   } catch (error) {
-    console.error("Error fetching users:", error);
+    console.error("Error fetching students:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -30,7 +30,7 @@ userRouter.get("/users/:id", async (req: Request, res: Response) => {
       return res.status(400).json({ msg: "invalid user id" });
     }
 
-    const user = await AppDataSource.manager.findOneBy(User, {
+    const user = await AppDataSource.manager.findOneBy(Student, {
       id: userID,
     });
 
@@ -58,10 +58,9 @@ userRouter.post("/users", async (req: Request, res: Response) => {
     }
 
     const { firstName, lastName, title, email, role, password } = value;
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const userRepository = AppDataSource.getRepository(User);
+    const userRepository = AppDataSource.getRepository(Student);
     const newUser = userRepository.create({
       firstName,
       lastName,
@@ -70,6 +69,7 @@ userRouter.post("/users", async (req: Request, res: Response) => {
       role,
       hashedPassword,
     });
+    
     await userRepository.save(newUser);
 
     res
@@ -83,7 +83,7 @@ userRouter.post("/users", async (req: Request, res: Response) => {
 
 userRouter.put("/user/:id", async (req: Request, res: Response) => {
   try {
-    const userRepository = AppDataSource.getRepository(User);
+    const userRepository = AppDataSource.getRepository(Student);
     const userID = Number(req.params.id);
 
     if (isNaN(userID)) {
@@ -137,7 +137,7 @@ userRouter.put("/user/:id", async (req: Request, res: Response) => {
 
 userRouter.delete("/user/:id", async (req: Request, res: Response) => {
   try {
-    const userRepository = AppDataSource.getRepository(User);
+    const userRepository = AppDataSource.getRepository(Student);
     const userId = Number(req.params.id);
 
     if (isNaN(userId)) {
