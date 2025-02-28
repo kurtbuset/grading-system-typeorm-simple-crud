@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Role } from "../_helpers/role"
 
 @Entity()
 export class Student {
@@ -13,17 +14,18 @@ export class Student {
     lastName!: string
 
     @Column()
-    sex!: string
+    title!: string
 
     @Column()
-    grade!: number
+    email!: string
+
+    @Column({
+        type: 'enum',
+        enum: Role,
+        default: Role.User
+    })
+    role!: Role
 
     @Column()
-    course!: string
-
-    @CreateDateColumn()
-    createdAt!: Date;  
-
-    @UpdateDateColumn()
-    updatedAt!: Date;
+    hashedPassword!: string
 }   
