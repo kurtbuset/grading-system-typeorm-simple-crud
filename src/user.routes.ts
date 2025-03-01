@@ -140,7 +140,7 @@ userRouter.put("/user/:id", async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 });
-
+//
 userRouter.delete("/student/:id", async (req: Request, res: Response) => {
   try {
     const studentRepository = AppDataSource.getRepository(Student);
