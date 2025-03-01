@@ -141,26 +141,26 @@ userRouter.put("/user/:id", async (req: Request, res: Response) => {
   }
 });
 
-userRouter.delete("/user/:id", async (req: Request, res: Response) => {
+userRouter.delete("/student/:id", async (req: Request, res: Response) => {
   try {
-    const userRepository = AppDataSource.getRepository(Student);
-    const userId = Number(req.params.id);
+    const studentRepository = AppDataSource.getRepository(Student);
+    const studentId = Number(req.params.id);
 
-    if (isNaN(userId)) {
-      return res.status(400).json({ error: "Invalid user ID" });
+    if (isNaN(studentId)) {
+      return res.status(400).json({ error: "Invalid student ID" });
     }
 
-    const user = await userRepository.findOneBy({ id: userId });
+    const student = await studentRepository.findOneBy({ id: studentId });
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
     }
 
-    await userRepository.remove(user);
+    await studentRepository.remove(student);
 
-    res.status(200).json({ message: "User has been removed" });
+    res.status(200).json({ message: "Student has been removed" });
   } catch (err) {
-    console.error("Error deleting user:", err);
+    console.error("Error deleting student:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
