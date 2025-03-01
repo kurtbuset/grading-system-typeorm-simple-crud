@@ -14,17 +14,17 @@ export class Student {
     lastName!: string
 
     @Column()
-    title!: string
+    sex!: string
 
     @Column()
-    email!: string
+    grade!: string
 
     @Column({
         type: 'enum',
-        enum: Role,
-        default: Role.User
+        enum: ['STEM', 'HUMMS'],
+        default: 'STEM'
     })
-    role!: Role
+    course!: string
 
     @Column()
     hashedPassword!: string

@@ -5,7 +5,6 @@ import bcrypt from "bcrypt";
 import { Role } from "./_helpers/role";
 
 import express, { Request, Response } from "express";
-import { Student } from "./entity/Student";
 const userRouter = express.Router();
 
 userRouter.get("/users", async (req: Request, res: Response) => {
