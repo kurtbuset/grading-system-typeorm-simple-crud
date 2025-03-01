@@ -90,17 +90,17 @@ userRouter.post("/students", async (req: Request, res: Response) => {
 //boss carl
 userRouter.put("/user/:id", async (req: Request, res: Response) => {
   try {
-    const userRepository = AppDataSource.getRepository(Student);
-    const userID = Number(req.params.id);
+    const StudentRepository = AppDataSource.getRepository(Student);
+    const StudentID = Number(req.params.id);
 
-    if (isNaN(userID)) {
-      return res.status(400).json({ msg: "Invalid user ID" });
+    if (isNaN(StudentID)) {
+      return res.status(400).json({ msg: "Invalid Student ID" });
     }
 
-    const userToUpdate = await userRepository.findOneBy({ id: userID });
+    const StudentToUpdate = await StudentRepository.findOneBy({ id: StudentID });
 
-    if (!userToUpdate) {
-      return res.status(404).json({ msg: "User not found" });
+    if (!StudentToUpdate) {
+      return res.status(404).json({ msg: "Student not found" });
     }
 
     // Validate input
@@ -122,7 +122,7 @@ userRouter.put("/user/:id", async (req: Request, res: Response) => {
     }
 
     // Update only the provided fields
-    Object.assign(userToUpdate, {
+    Object.assign(StudentToUpdate, {
       firstName,
       lastName,
       title,
@@ -131,11 +131,11 @@ userRouter.put("/user/:id", async (req: Request, res: Response) => {
       ...(password ? { password: hashedPassword } : {}),
     });
 
-    await userRepository.save(userToUpdate);
+    await StudentRepository.save(StudentToUpdate);
 
     return res
       .status(200)
-      .json({ message: `User ${userID} updated successfully` });
+      .json({ message: `User ${StudentID} updated successfully` });
   } catch (err) {
     console.error("Error updating user:", err);
     return res.status(500).json({ error: "Internal server error" });
