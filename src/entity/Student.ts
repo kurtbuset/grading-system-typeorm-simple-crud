@@ -1,31 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
-import { Role } from "../_helpers/role"
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
 export class Student {
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-    @PrimaryGeneratedColumn()
-    id!: number
+  @Column()
+  firstName!: string;
 
-    @Column()
-    firstName!: string
+  @Column()
+  lastName!: string;
 
-    @Column()
-    lastName!: string
+  @Column()
+  sex!: string;
 
-    @Column()
-    title!: string
+  @Column()
+  grade!: string;
 
-    @Column()
-    email!: string
-
-    @Column({
-        type: 'enum',
-        enum: Role,
-        default: Role.User
-    })
-    role!: Role
-
-    @Column()
-    hashedPassword!: string
-}   
+  @Column()
+  course!: string;
+}
