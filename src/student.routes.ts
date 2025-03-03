@@ -2,9 +2,10 @@ import { AppDataSource } from "./_helpers/data-source";
 import { Student } from "./entity/Student";
 import Joi from "joi";
 import bcrypt from "bcrypt";
-import { Role } from "./_helpers/course";
+import { Course } from "./_helpers/course";
 
 import express, { Request, Response } from "express";
+import { Gender } from "./_helpers/gender";
 const studentRouter = express.Router();
 
 studentRouter.get("/users", async (req: Request, res: Response) => {
@@ -58,9 +59,7 @@ studentRouter.post("/students", async (req: Request, res: Response) => {
         .json({ error: error.details.map((x) => x.message) });
     }
 
-    const { firstName, lastName, sex, grade, course, password } = value;
-
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const { firstName, lastName, sex, grade, course } = value;
 
     const userRepository = AppDataSource.getRepository(Student);
     const newUser = userRepository.create({
@@ -69,7 +68,6 @@ studentRouter.post("/students", async (req: Request, res: Response) => {
       sex,
       grade,
       course,
-      hashedPassword,
     });
 
     await userRepository.save(newUser);
@@ -123,10 +121,9 @@ studentRouter.put("/user/:id", async (req: Request, res: Response) => {
     Object.assign(StudentToUpdate, {
       firstName,
       lastName,
-      title,
-      role,
-      email,
-      ...(password ? { password: hashedPassword } : {}),
+      sex,
+      grade,
+      course,
     });
 
     await StudentRepository.save(StudentToUpdate);
@@ -166,13 +163,11 @@ studentRouter.delete("/student/:id", async (req: Request, res: Response) => {
 });
 
 const createSchema = Joi.object({
-  title: Joi.string().required(),
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
-  email: Joi.string().email().required(),
-  role: Joi.string().valid(Role.Admin, Role.User).required(),
-  password: Joi.string().min(6).required(),
-  confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
+  sex: Joi.string().valid(Gender.Male, Gender.Female).required(),
+  grade: Joi.number().valid().required(),
+  course: Joi.string().valid(Course.STEM, Course.HUMMS).required(),
 });
 
 const updateSchema = Joi.object({
