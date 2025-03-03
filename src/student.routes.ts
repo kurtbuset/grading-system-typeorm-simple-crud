@@ -5,9 +5,9 @@ import bcrypt from "bcrypt";
 import { Role } from "./_helpers/course";
 
 import express, { Request, Response } from "express";
-const userRouter = express.Router();
+const studentRouter = express.Router();
 
-userRouter.get("/users", async (req: Request, res: Response) => {
+studentRouter.get("/users", async (req: Request, res: Response) => {
   try {
     const students = await AppDataSource.manager.find(Student);
 
@@ -22,7 +22,7 @@ userRouter.get("/users", async (req: Request, res: Response) => {
   }
 });
 
-userRouter.get("/users/:id", async (req: Request, res: Response) => {
+studentRouter.get("/users/:id", async (req: Request, res: Response) => {
   try {
     const userID = Number(req.params.id);
 
@@ -46,7 +46,7 @@ userRouter.get("/users/:id", async (req: Request, res: Response) => {
 });
 
 //trangia
-userRouter.post("/students", async (req: Request, res: Response) => {
+studentRouter.post("/students", async (req: Request, res: Response) => {
   try {
     const { error, value } = createSchema.validate(req.body, {
       abortEarly: false,
@@ -84,7 +84,7 @@ userRouter.post("/students", async (req: Request, res: Response) => {
 });
 
 //boss carl
-userRouter.put("/user/:id", async (req: Request, res: Response) => {
+studentRouter.put("/user/:id", async (req: Request, res: Response) => {
   try {
     const StudentRepository = AppDataSource.getRepository(Student);
     const StudentID = Number(req.params.id);
@@ -141,7 +141,7 @@ userRouter.put("/user/:id", async (req: Request, res: Response) => {
 });
 
 //
-userRouter.delete("/student/:id", async (req: Request, res: Response) => {
+studentRouter.delete("/student/:id", async (req: Request, res: Response) => {
   try {
     const studentRepository = AppDataSource.getRepository(Student);
     const studentId = Number(req.params.id);
@@ -185,4 +185,4 @@ const updateSchema = Joi.object({
   confirmPassword: Joi.string().valid(Joi.ref("password")).empty(""),
 }).with("password", "confirmPassword");
 
-export default userRouter;
+export default studentRouter;

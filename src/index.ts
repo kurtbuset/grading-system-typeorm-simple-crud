@@ -1,8 +1,6 @@
 import express from 'express'
-import studentRouter from './user.routes'
+import studentRouter from './student.routes'
 const app = express()
-
-// import userRouter from './user.routes'
 
 app.use(express.json())
 
