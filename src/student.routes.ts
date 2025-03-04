@@ -23,20 +23,20 @@ studentRouter.get("/users", async (req: Request, res: Response) => {
   }
 });
 
-studentRouter.get("/users/:id", async (req: Request, res: Response) => {
+studentRouter.get("/students/:id", async (req: Request, res: Response) => {
   try {
-    const userID = Number(req.params.id);
+    const studentID = Number(req.params.id);
 
-    if (isNaN(userID)) {
+    if (isNaN(studentID)) {
       return res.status(400).json({ msg: "invalid user id" });
     }
 
     const user = await AppDataSource.manager.findOneBy(Student, {
-      id: userID,
+      id: studentID,
     });
 
     if (!user) {
-      return res.status(404).json({ msg: `user id: ${userID} cant be found` });
+      return res.status(404).json({ msg: `user id: ${studentID} cant be found` });
     }
 
     return res.status(200).json({ msg: "User found", user });
