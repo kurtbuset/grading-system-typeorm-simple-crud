@@ -8,7 +8,7 @@ import express, { Request, Response } from "express";
 import { Gender } from "./_helpers/gender";
 const studentRouter = express.Router();
 
-studentRouter.get("/users", async (req: Request, res: Response) => {
+studentRouter.get("/students", async (req: Request, res: Response) => {
   try {
     const students = await AppDataSource.manager.find(Student);
 
