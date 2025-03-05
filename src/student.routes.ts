@@ -175,7 +175,7 @@ const updateSchema = Joi.object({
   firstName: Joi.string().empty(""),
   lastName: Joi.string().empty(""),
   email: Joi.string().email().empty(""),
-  role: Joi.string().valid(Role.Admin, Role.User).empty(""),
+  role: Joi.string().valid(Role.Admin, Role.Student).empty(""),
   password: Joi.string().min(6).empty(""),
   confirmPassword: Joi.string().valid(Joi.ref("password")).empty(""),
 }).with("password", "confirmPassword");
