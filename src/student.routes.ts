@@ -110,12 +110,9 @@ studentRouter.put("/Students/:id", async (req: Request, res: Response) => {
         .json({ error: error.details.map((x) => x.message) });
     }
 
-    const { firstName, lastName, title, email, role, password } = value;
+    const { firstName, lastName, sex, grade, course } = value;
     let hashedPassword;
 
-    if (password) {
-      hashedPassword = await bcrypt.hash(password, 10);
-    }
 
     // Update only the provided fields
     Object.assign(StudentToUpdate, {
@@ -174,10 +171,9 @@ const updateSchema = Joi.object({
   title: Joi.string().empty(""),
   firstName: Joi.string().empty(""),
   lastName: Joi.string().empty(""),
-  email: Joi.string().email().empty(""),
-  role: Joi.string().valid(Role.Admin, Role.Student).empty(""),
-  password: Joi.string().min(6).empty(""),
-  confirmPassword: Joi.string().valid(Joi.ref("password")).empty(""),
-}).with("password", "confirmPassword");
+  sex: Joi.string().valid(Gender.Male, Gender.Female).empty(""),
+  grade: Joi.number().valid().empty(""),
+  course: Joi.string().valid(Course.STEM, Course.HUMMS).empty(""),
+});
 
 export default studentRouter;
