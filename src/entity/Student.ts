@@ -15,7 +15,7 @@ export class Student {
   sex!: string;
 
   @Column()
-  grade!: string;
+  grade!: number;
 
   @Column()
   course!: string;
